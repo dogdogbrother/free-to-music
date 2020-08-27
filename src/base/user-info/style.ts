@@ -12,6 +12,5 @@ export const Avatar = styled.img`
 
 export const UserName = styled.span`
   flex: 1;
-  cursor: pointer;
   line-height: 40px;
 `

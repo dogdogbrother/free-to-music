@@ -4,3 +4,6 @@
   overflow: hidden;
   word-break: break-all;
 }
+.pointer {
+  cursor: pointer;
+}

@@ -21,7 +21,6 @@ const tailLayout = {
 
 
 const LoginForm = (props: IProps) => {
-  console.log(props);
   const { submit } = props
   const onFinish = (values: any) => {
     submit(values);
@@ -41,7 +40,7 @@ const LoginForm = (props: IProps) => {
         <Input />
       </Form.Item>
       <Form.Item
-        label="Password"
+        label="密码"
         name="password"
         rules={[{ required: true, message: '密码不能为空' }]}
       >

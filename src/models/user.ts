@@ -1,5 +1,14 @@
-import { Model } from 'dva-core-ts';
+/**
+ * @description 用于个人信息的管理
+ * @author senlin
+ */
+
+import axios from 'axios'
+import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
+
+const GET_INFO_URL = '/api/user/info'
+const LOGOUT_URL = '/api/user/logout'
 
 interface UserState {
   userName: string,  
@@ -13,6 +22,10 @@ interface UserModel extends Model {
   reducers: {
     setState: Reducer<UserState>;
   };
+  effects: {
+    getInfo: Effect;
+    logout: Effect;
+  }
 }
 
 const initialState  = {
@@ -30,6 +43,24 @@ const userModel: UserModel = {
       return {
         ...state,
         ...payload
+      }
+    }
+  },
+  effects: {
+    *getInfo(_,{ call, put }) {
+      const { data } = yield call(axios.get, GET_INFO_URL)
+      yield put({
+        type: 'setState',
+        payload: data || initialState,
+      })
+    },
+    *logout(_,{ call, put }) {
+      const { code } = yield call(axios.get, LOGOUT_URL)
+      if (code) {
+        yield put({
+          type: 'setState',
+          payload: initialState,
+        })
       }
     }
   }

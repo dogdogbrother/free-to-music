@@ -1,12 +1,13 @@
 /**
  * @description 登陆注册的dialog
  */
-import React, { useState } from 'react'
+import React, { useState, } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { RootState } from '../../models'
 import { Modal } from 'antd';
 import { SwitchWrap } from './style'
 import LoginFrom, { ILoginParameter } from './LoginForm'
+import RegisterForm, { IRegisterParameter } from './RegisterForm'
 
 const mapStateToProps = ({login}: RootState) => login
 
@@ -29,16 +30,17 @@ const Login = (props: IProps) => {
     )
   }
   const onCancel = () => {
-    dispatch({
-      type: 'login/changeStatus',
-      payload: {
-        loginStatus: false
-      }
-    })
+    dispatch({ type: 'login/closeDialog' })
   }
   const loginSubmit = (parameter: ILoginParameter) => {
     dispatch({
       type: 'login/login',
+      payload: parameter
+    })
+  }
+  const registerSubmit = (parameter:IRegisterParameter) => {
+    dispatch({
+      type: 'login/register',
       payload: parameter
     })
   }
@@ -55,9 +57,7 @@ const Login = (props: IProps) => {
         ?
         <LoginFrom submit={loginSubmit} />
         :
-        <div>
-          <p>我是注册</p>
-        </div>
+        <RegisterForm submit={registerSubmit} />
       }
     </Modal>
   </>

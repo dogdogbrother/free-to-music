@@ -6,6 +6,7 @@ import { Reducer } from 'redux';
 import axios from 'axios'
 
 const LOGIN_URL = '/api/user/login'
+const REGISTER_URL = '/api/user/register'
 
 type actionType = 'login' | 'register'
 
@@ -20,8 +21,10 @@ interface LoginModel extends Model {
     setState: Reducer<loginState>;
   },
   effects: {
-    changeStatus: Effect;
+    openDialog: Effect;
+    closeDialog: Effect;
     login: Effect;
+    register: Effect;
   }
 }
 
@@ -35,6 +38,8 @@ const loginModel: LoginModel = {
   state: initialState,
   reducers: {
     setState(state, {payload}) {
+      console.log(payload);
+      
       return {
         ...state,
         ...payload
@@ -42,26 +47,37 @@ const loginModel: LoginModel = {
     }
   },
   effects: {
-    *changeStatus({ payload },{ put }) {
+    *openDialog(_,{ put }) {
       yield put({
         type: 'setState',
-        payload
+        payload: { loginStatus: true }
+      })
+    },
+    *closeDialog(_,{ put }) {
+      yield put({
+        type: 'setState',
+        payload: { loginStatus: false }
       })
     },
     *login({ payload },{ call, put }) {
       try {
          const { data } = yield call(axios.post, LOGIN_URL, payload)
-         yield put({
-           type: 'setState',
-           payload: {
-            loginStatus: false
-           }
-         })
+         yield put({ type: 'closeDialog' })
          yield put({
           type: 'user/setState',
           payload: data
         })
       } catch(e) {}
+    },
+    *register({ payload },{ call, put }) {
+      try {
+        const { data } = yield call(axios.post, REGISTER_URL, payload)
+        yield put({ type: 'closeDialog' })
+        yield put({
+         type: 'user/setState',
+         payload: data
+       })
+     } catch(e) {}
     }
   }
 }
