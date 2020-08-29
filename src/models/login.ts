@@ -1,5 +1,6 @@
 /**
  * @description 用于注册登陆的dialog状态，和里面的登陆注册啥的
+ * @author senlin
  */
 import { Model, Effect } from 'dva-core-ts';
 import { Reducer } from 'redux';
@@ -10,7 +11,7 @@ const REGISTER_URL = '/api/user/register'
 
 type actionType = 'login' | 'register'
 
-export interface loginState {
+export interface LoginState {
   status: boolean,  
   type: actionType,
 }
@@ -18,7 +19,7 @@ export interface loginState {
 interface LoginModel extends Model {
   namespace: 'login',
   reducers: {
-    setState: Reducer<loginState>;
+    setState: Reducer<LoginState>;
   },
   effects: {
     openDialog: Effect;
@@ -38,8 +39,6 @@ const loginModel: LoginModel = {
   state: initialState,
   reducers: {
     setState(state, {payload}) {
-      console.log(payload);
-      
       return {
         ...state,
         ...payload

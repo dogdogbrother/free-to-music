@@ -47,7 +47,7 @@ const UploadSong = (props: IProps) => {
     </div>
   )
   const updateSongProps = {
-    // accept: "audio/*",   UploadFile
+    accept: "audio/*", 
     name: "file",
     action: "api/song/upload-song",
     onChange(info: UploadChangeParam) {
@@ -81,10 +81,9 @@ const UploadSong = (props: IProps) => {
     }
     values.songPath = values.songPath.file.response
     axios.post(SONG_URL, values).then(res => {
-      console.log(res);
-      
       message.success('上传成功!')
       form.resetFields()
+      setImageUrl('')
     })
   }
   return (

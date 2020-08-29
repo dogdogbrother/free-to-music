@@ -5,7 +5,7 @@ import { renderRoutes } from 'react-router-config';
 import routes from '../../routes/index.js';
 const LayoutMain = ()=> {
   return (
-    <Wrap>
+    <Wrap className="calc-height-80">
       <Switch>
       { renderRoutes (routes) }
       </Switch>

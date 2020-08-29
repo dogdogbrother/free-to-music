@@ -1,37 +1,28 @@
-/**
- * @description 网易云音乐的搜索界面
- * @author senlin
- */
 import React, { useState } from 'react'
 import { Wrap, SearchHeader } from './style'
 import { Input, message } from 'antd';
 import { CustomerServiceOutlined } from '@ant-design/icons';
-import SongList from '@/component/song-list'
 import axios from 'axios'
-import formatSongs, { SongProps } from '@/utils/formatSong'
+import { SongProps } from '@/utils/formatSong'
+import SongList from '@/component/song-list'
 
-const WY_MUSIC_LIST_URL = 'wyapi/search?' 
+const MY_MUSIC_LIST_URL = 'api/song/list/' 
 
-const Wyy = () => {
+const My = () => {
   const [songs, setSongs] = useState<SongProps[]>([])
+
   function handlerSearch(value: React.KeyboardEvent<HTMLInputElement>) {
     if (!value.currentTarget.value) {
       return message.error('你要找什么呢,先输入些什么吧');
     }
-    axios.get(WY_MUSIC_LIST_URL, {
-      params: {
-        offset: 0,
-        limit: 12,
-        keywords: value.currentTarget.value
-      }
-    }).then(res => {
-      setSongs(formatSongs(res.data.result.songs))
+    axios.get(MY_MUSIC_LIST_URL + value.currentTarget.value).then(res => {
+      setSongs(res.data)
     })
   }
-  return (
+  return ( 
     <Wrap>
       <SearchHeader>
-        <h2 className="title">网易云音乐</h2>
+        <h2 className="title">我的音乐</h2>
         <Input 
           size="large" 
           className="search" 
@@ -45,4 +36,4 @@ const Wyy = () => {
   )
 }
 
-export default Wyy;
+export default My

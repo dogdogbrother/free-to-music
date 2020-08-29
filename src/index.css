@@ -15,3 +15,6 @@ code {
 html,body,#root {
   height: 100%;
 }
+.calc-height-80 {
+  height: calc(100% - 80px);
+}

@@ -7,7 +7,7 @@ export interface SongProps {
   singer: string,
   album: string,
   songPath: string,
-  coverPath: string,
+  coverPath: string
 }
 
 export interface ArtistsProps {

@@ -3,7 +3,7 @@
  */
 import React, { useState, } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import { RootState } from '../../models'
+import { RootState } from '@/models/index'
 import { Modal } from 'antd';
 import { SwitchWrap } from './style'
 import LoginFrom, { ILoginParameter } from './LoginForm'

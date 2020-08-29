@@ -29,6 +29,7 @@ const Aside = (props: IProps) => {
         </NavLink>
         <NavLink exact to="/wyy-search" activeClassName="active">网易云音乐</NavLink>
         <NavLink exact to="/my-search" activeClassName="active">我的音乐</NavLink>
+        <NavLink exact to="/play-list" activeClassName="active">播放列表</NavLink>
         <NavLink exact to="/upload-song" activeClassName="active">上传歌曲</NavLink>
       </LinkBox>
     </Wrap>

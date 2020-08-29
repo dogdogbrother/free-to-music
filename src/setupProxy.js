@@ -1,9 +1,9 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-// const API = 'http://49.233.185.168:3009'
-// const WY_API = 'http://49.233.185.168:3008'
-const API = 'http://0.0.0.0:3009'
+const API = 'http://49.233.185.168:3009'
 const WY_API = 'http://49.233.185.168:3008'
+// const API = 'http://0.0.0.0:3009'
+// const WY_API = 'http://0.0.0.0:3008'
 
 module.exports = function(app) {
   app.use(createProxyMiddleware ('/api', {

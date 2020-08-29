@@ -6,14 +6,15 @@ import { BrowserRouter } from 'react-router-dom'
 import { LayoutBox } from './style'
 import Aside from './aside'
 import LayoutMain from './main'
-
+import Player from './player'
 const Layout = () => {
   return (
     <BrowserRouter>
       <LayoutBox>
         <Aside />
-        <LayoutMain></LayoutMain>
+        <LayoutMain />
       </LayoutBox>
+      <Player />
     </BrowserRouter>
   )
 }

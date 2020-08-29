@@ -10,7 +10,7 @@ import { Reducer } from 'redux';
 const GET_INFO_URL = '/api/user/info'
 const LOGOUT_URL = '/api/user/logout'
 
-interface UserState {
+export interface UserState {
   userName: string,  
   nickName: string, 
   avatar: string, 

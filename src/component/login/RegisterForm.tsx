@@ -33,6 +33,7 @@ const RegisterForm = (props: IProps) => {
       labelAlign="left"
       name="login"
       onFinish={onFinish}
+      
     >
       <Form.Item
         label="用户名"
@@ -53,7 +54,7 @@ const RegisterForm = (props: IProps) => {
         name="password"
         rules={[{ required: true, message: '密码不能为空' }]}
       >
-        <Input.Password />
+        <Input.Password autoComplete="new-password"/>
       </Form.Item>
       <Form.Item
         label="确认密码"
