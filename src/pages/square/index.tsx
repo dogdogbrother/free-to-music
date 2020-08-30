@@ -5,7 +5,7 @@
 import React, { useState, useEffect, ChangeEvent } from 'react'
 import axios from 'axios'
 import { Input, Button  } from 'antd';
-import { Wrap, List, Dynamic, UserHeader, Avatar, UserInfo, Content, Link, Publish, TextDecorate, CountString, DynamicImage } from './style'
+import { Wrap, List, Dynamic, UserHeader, Avatar, UserInfo, Content, Link, Publish, TextDecorate, CountString, DynamicImage, PublishBtns } from './style'
 import { SongProps } from '@/utils/formatSong'
 import { UserState } from '@/models/user'
 import { useDispatch } from 'react-redux'
@@ -74,13 +74,10 @@ const Square = () => {
   }
   async function publish() {
     const { code } = await axios.post(SQUARE_PUBLISH_URL, { message: textValue })
-    console.log(code);
-    
     if (code === 200) {
       getList()
       setTextValue('')
     }
-    
   }
   return (
     <Wrap>
@@ -98,9 +95,10 @@ const Square = () => {
           />
           <CountString>{remain}</CountString>
         </TextDecorate>
-        <div>
+        <PublishBtns>
+          <Link><i className="iconfont" style={{fontSize: 20}}>&#xe61a;</i> 插入图片</Link>
           <Button type="primary" size="large" onClick={publish}>发布</Button>
-        </div>
+        </PublishBtns>
       </Publish>
       <List>
         {
@@ -109,7 +107,7 @@ const Square = () => {
               <UserHeader>
                 <Avatar src={dynamic.user.avatar} alt="avatar"/>
                 <UserInfo>
-                  <p className="user-name">{dynamic.user.userName}</p>
+                  <p className="user-name">{dynamic.user.nickName}</p>
                   <p className="describe">{moment(dynamic.createdAt).format('YYYY-MM-DD HH:MM')}</p>
                 </UserInfo>
               </UserHeader>

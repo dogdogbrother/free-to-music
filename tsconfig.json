@@ -26,6 +26,7 @@
       "@/models/*": ["models/*"],
       "@/assets/*": ["assets/*"],
       "@/base/*": ["base/*"],
+      "@/routes/*": ["routes/*"]
     },
   },
   "include": [

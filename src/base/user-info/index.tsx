@@ -46,7 +46,7 @@ const UserInfo = (props: IProps) => {
           <UserName 
             className="ellipsis" 
             style={{color:'#333'}}
-          >{reset.userName}</UserName>
+          >{reset.nickName}</UserName>
         </>
           :
         <>

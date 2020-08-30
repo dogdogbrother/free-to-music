@@ -11,7 +11,4 @@ export const SearchHeader = styled.div`
     font-size: 24px;
     line-height: 40px;
   }
-  .search {
-    max-width:400px;
-  }
 `

@@ -15,6 +15,7 @@ export interface UserState {
   nickName: string, 
   avatar: string, 
   id: number,
+  likes: number[],
 }
 
 interface UserModel extends Model {
@@ -33,6 +34,7 @@ const initialState  = {
   nickName: '', 
   avatar: '', 
   id: 0,
+  likes: [],
 }
 
 const userModel: UserModel = {

@@ -17,11 +17,18 @@ let audioQuote: IAudioProps = {  // 用于 model 外的函数调用
   play(){}
 } 
 
+export enum IPlayMode {
+  cir,  // 循环播放
+  single, // 单曲播放
+  random  // 随机播放
+}
+
 export interface PlayState {
   audioEle: null
   playing: boolean  // 播放状态
   playlist: SongProps[] // 正在播放的歌曲列表
   playIndex: number // 正在播放的歌曲列表中的index
+  playMode: IPlayMode
 }
 
 interface PlayModel extends Model {
@@ -45,7 +52,8 @@ const initialState: PlayState = {
   audioEle: null,
   playing: false,
   playlist: [],
-  playIndex: -1
+  playIndex: -1,
+  playMode: IPlayMode.cir
 }
 
 const playModel: PlayModel = {

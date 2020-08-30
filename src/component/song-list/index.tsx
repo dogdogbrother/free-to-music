@@ -7,10 +7,13 @@ import { RootState } from '@/models/index'
 import { Song, LikeIcon, SongWrap, SongMain, Icons, PlayIcon } from './style'
 import { useSelector, useDispatch } from 'react-redux'
 import ListHead from '@/component/list-head'
+import axios from 'axios'
+
+const LIKE_URL = 'api/like/'
 
 const SongList = (props: any) => {
   const dispatch = useDispatch()
-  const {playlist, playIndex, playing} = useSelector((state: RootState) => state.play)
+  const {playlist, playIndex, playing, likes} = useSelector((state: RootState) => ({...state.play, ...state.user}))
   const { songs } = props
   const currentPlayId = playlist.length && playlist[playIndex].id
   function handlePlay(song: SongProps) {
@@ -18,6 +21,18 @@ const SongList = (props: any) => {
     dispatch({
       type: 'play/requestMusic',
       song
+    })
+  }
+  function handleLike(song: SongProps, action: string) {
+    axios.post(LIKE_URL + action, {song}).then((res: any) => {
+      if (res.code === 200) {
+        dispatch({
+          type: 'user/setState',
+          payload: {
+            likes: res.data
+          }
+        })
+      }
     })
   }
   return (
@@ -29,7 +44,12 @@ const SongList = (props: any) => {
             <Song key={index}>
               <SongMain>
                 <div>
-                  <LikeIcon className="iconfont">&#xe8f9;</LikeIcon>
+                  {
+                    likes.find((like: number) => like === song.id) 
+                    ? <LikeIcon className="iconfont" onClick={() => handleLike(song, 'unlike')}>&#xe8fa;</LikeIcon>
+                    : <LikeIcon className="iconfont" onClick={() => handleLike(song, 'like')}>&#xe8f9;</LikeIcon>
+                  }
+                  
                   <span>{song.songName}</span>
                 </div>
                 <Icons>

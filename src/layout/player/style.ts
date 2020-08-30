@@ -18,3 +18,9 @@ export const PlayerBtns = styled.div`
     cursor: pointer;
   }
 `
+export const PlayeMode = styled.div`
+  i{
+    font-size: 30px;
+    cursor: pointer;
+  }
+`

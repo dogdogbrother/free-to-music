@@ -75,3 +75,9 @@ export const DynamicImage = styled.img`
   width: auto;
   margin-right: 10px;
 `
+
+export const PublishBtns = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`
