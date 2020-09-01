@@ -16,11 +16,11 @@ const ListHead = (props: IProps) => {
         empty 
         ?
         <EmptyWrap>
-          <div>
+          <div style={{marginTop: '60px'}}>
             <img src={require('../../assets/images/empty.png')} alt="空滴"/>
             <h4>
               还是空滴
-              <Link>随便搜搜?</Link>
+              <Link onClick={() => alert('我累了,功能还没写')}>随便搜搜?</Link>
             </h4>
           </div>
         </EmptyWrap>

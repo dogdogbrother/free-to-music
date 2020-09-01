@@ -2,13 +2,13 @@ import React, { useRef, useEffect } from 'react'
 import { PlayerWrap, PlayerBtns, PlayeMode } from './style'
 import { RootState } from '@/models/index'
 import { useSelector, useDispatch } from 'react-redux'
+import Progress from '@/base/progress'
 // import { IPlayMode } from '@/models/play'
 
 const Player = () => {
   const playRef = useRef(null);
   const dispatch = useDispatch()
   let { playing, playMode } = useSelector((state: RootState) => state.play)
-  console.log(playMode);
   useEffect(() => {
     dispatch({
       type: 'play/audio',
@@ -50,6 +50,7 @@ const Player = () => {
       <PlayeMode onClick={changePlayMode}>
         {map[playMode]}
       </PlayeMode>
+      <Progress />
       <audio ref={playRef} />
     </PlayerWrap>
   )

@@ -12,8 +12,10 @@ const Like = () => {
   const [songs, setSongs] = useState<SongProps[]>([])
   const { likes } = useSelector(({user}: RootState) => user)
   useEffect(() => {
-    axios.get(MY_LIKE_URL).then(res => {
-      setSongs(res.data)
+    axios.get(MY_LIKE_URL).then((res: any )=> {
+      if (res.code === 200) {
+        setSongs(res.data)
+      }
     })
   }, [likes])
   return ( 

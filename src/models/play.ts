@@ -29,6 +29,9 @@ export interface PlayState {
   playlist: SongProps[] // 正在播放的歌曲列表
   playIndex: number // 正在播放的歌曲列表中的index
   playMode: IPlayMode
+  currentTime: number
+  totalTime: number
+  buffered: number // 当前歌曲的缓存位置，有可能有bug，盲写的
 }
 
 interface PlayModel extends Model {
@@ -45,6 +48,7 @@ interface PlayModel extends Model {
     pause: Effect;
     play: Effect;
     initAudio: Effect;
+    changePlay: Effect;
   };
 }
 
@@ -53,7 +57,10 @@ const initialState: PlayState = {
   playing: false,
   playlist: [],
   playIndex: -1,
-  playMode: IPlayMode.cir
+  playMode: IPlayMode.cir,
+  currentTime: 0,
+  totalTime: 0,
+  buffered: 0,
 }
 
 const playModel: PlayModel = {
@@ -105,7 +112,13 @@ const playModel: PlayModel = {
       }
     },
     *nextMusic(_, { put, select }) {
-      const {playlist, playIndex } = yield select((state: RootState)=> state.play)
+      const {playlist, playIndex, playMode, audioEle } = yield select((state: RootState)=> state.play)
+      console.log(audioEle.currentTime);
+      if (playMode === 1) {
+        audioEle.currentTime = 0
+        audioEle.play()
+        return 
+      }
       let resultIndex = 0
       if (playIndex < playlist.length - 1) {
         resultIndex += 1
@@ -148,22 +161,54 @@ const playModel: PlayModel = {
       })
       audioEle.play()
     },
+    *changePlay({ payload }, { put, select }) { 
+      const { audioEle } = yield select((state: RootState)=> state.play)
+      audioEle.currentTime = payload.currentTime
+      yield put({
+        type: 'setState',
+        payload
+      })
+    },
     // 这里是初始化audio，获取当前播放时间啊，自动播放啊什么的靠的就是这里了
-    *initAudio({ payload }, { put, select }) {
+    *initAudio({ payload: dispatch }, { put, select }) {
       const { audioEle } = yield select((state: RootState)=> state.play)
       audioEle.onprogress = () => { // 在这里做缓存条的逻辑，复杂功能，后面写
         //  console.log(audioEle.buffered); 
+        console.log();
       }
       audioEle.onended = () => {
-        payload({
+        dispatch({
           type: "play/nextMusic"
         })
+      }
+      audioEle.onprogress = () => {
+        try {
+          if (audioEle.buffered.length > 0) {
+            const duration = audioEle.duration
+            let buffered = 0
+            buffered = audioEle.buffered.end(0) > duration ? duration : audioEle.buffered.end(0)
+            dispatch({
+              type: "play/setState",
+              payload: { buffered }
+            })
+          }
+        } catch (e) {}
+      }
+      // 开始播放音乐
+      audioEle.onplay = () => {
+
       }
       // 音乐播放出错
       audioEle.onerror = () => {}
       // 获取当前播放时间
       audioEle.ontimeupdate = () => {
-        // console.log(audioEle.currentTime)
+        dispatch({
+          type: 'play/setState',
+          payload: {
+            currentTime: audioEle.currentTime,
+            totalTime: audioEle.duration
+          }
+        })
       }
     }
   }
