@@ -20,7 +20,7 @@ interface IProps extends MadelState {}
 const Aside = (props: IProps) => {
   // const { dispatch, ...reset } = props
   return (
-    <Wrap>
+    <Wrap id="aside">
       <UserInfo />
       <LinkBox>
         {

@@ -8,6 +8,9 @@ export const PlayerWrap = styled.div`
   height: 80px;
   background-color: rgba(0,0,0,0.1);
   display: flex;
+  @media (max-width: 640px) {
+    left: 0;
+  } 
 `
 
 export const PlayerBtns = styled.div`

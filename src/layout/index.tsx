@@ -10,7 +10,7 @@ import Player from './player'
 const Layout = () => {
   return (
     <BrowserRouter>
-      <LayoutBox>
+      <LayoutBox id="layout-box">
         <Aside />
         <LayoutMain />
       </LayoutBox>

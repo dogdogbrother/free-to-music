@@ -1,0 +1,11 @@
+
+@media (min-width: 640px) {
+  #layout-box {
+      flex-direction: row;
+  }
+}
+@media (max-width: 640px) {
+  #layout-box {
+      flex-direction: column;
+  }
+}

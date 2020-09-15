@@ -6,8 +6,10 @@ export const Wrap = styled.section`
   background-color: #f4f4f4;
   box-sizing: border-box;
   padding: 20px 30px;
+  @media (max-width: 640px) {
+    display: none;
+  }  
 `
-
 export const LinkBox = styled.section`
   padding: 20px 0px;
   a {
