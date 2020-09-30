@@ -212,3 +212,6 @@ export const CommentContent = styled.div`
     }
   }
 `
+export const Comment2 = styled.ul`
+
+`

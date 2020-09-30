@@ -27,6 +27,7 @@ export interface PlayState {
   audioEle: null
   playing: boolean  // 播放状态
   playlist: SongProps[] // 正在播放的歌曲列表
+  randomPlaylist: SongProps[] // 随机播放打乱的列表
   playIndex: number // 正在播放的歌曲列表中的index
   playMode: IPlayMode
   currentTime: number
@@ -49,6 +50,7 @@ interface PlayModel extends Model {
     play: Effect;
     initAudio: Effect;
     changePlay: Effect;
+    changePlayMode: Effect;
   };
 }
 
@@ -56,6 +58,7 @@ const initialState: PlayState = {
   audioEle: null,
   playing: false,
   playlist: [],
+  randomPlaylist: [],
   playIndex: -1,
   playMode: IPlayMode.cir,
   currentTime: 0,
@@ -88,7 +91,7 @@ const playModel: PlayModel = {
      * 2. playing 是一定会为 true 的
      */
     *requestMusic({song}, { put, select }) {
-      const { playlist, playIndex } = yield select((state: RootState)=> state.play)
+      const { playlist, playMode, randomPlaylist } = yield select((state: RootState)=> state.play)
       const currentIndex = playlist.findIndex((play: SongProps) => play.id === song.id)
       if (currentIndex < 0) { // 代表列表中没有这歌曲
         yield put({
@@ -96,7 +99,8 @@ const playModel: PlayModel = {
           payload: {
             playing: true,
             playlist: [...playlist,song],
-            playIndex: playIndex + 1
+            randomPlaylist: playMode === 2 ? [...randomPlaylist, song] : [], // 这个地方不应该这么写，但是我偷懒了，暂时这样吧
+            playIndex: playlist.length
           }
         })
         handlePlay(song.songPath)
@@ -112,17 +116,18 @@ const playModel: PlayModel = {
       }
     },
     *nextMusic(_, { put, select }) {
-      const {playlist, playIndex, playMode, audioEle } = yield select((state: RootState)=> state.play)
-      console.log(audioEle.currentTime);
+      const {playlist, playIndex, playMode, audioEle, randomPlaylist } = yield select((state: RootState)=> state.play)
       if (playMode === 1) {
         audioEle.currentTime = 0
         audioEle.play()
         return 
       }
-      let resultIndex = 0
+      let resultIndex = playIndex
       if (playIndex < playlist.length - 1) {
-        resultIndex += 1
-      } 
+        resultIndex ++
+      } else {
+        resultIndex = 0
+      }
       yield put({
         type: "setState",
         payload: {
@@ -130,7 +135,7 @@ const playModel: PlayModel = {
           playIndex: resultIndex
         }
       })
-      handlePlay(playlist[resultIndex].songPath)
+      handlePlay(playMode === 2 ? randomPlaylist[resultIndex].songPath : playlist[resultIndex].songPath)
     },
     *preMusic(_, { put, select }) {
       const { playlist, playIndex } = yield select((state: RootState)=> state.play)
@@ -167,6 +172,28 @@ const playModel: PlayModel = {
       yield put({
         type: 'setState',
         payload
+      })
+    },
+    *changePlayMode({ payload }, { put, select }) {
+      let { playlist, randomPlaylist, playIndex, audioEle } = yield select((state: RootState)=> state.play)
+      console.log(audioEle.src);
+      console.log(playlist);
+      
+      // 如果 playMode 为2的话就是随机播放了,如果当前没有播放列表也就不用操作
+      if (payload.playMode && payload.playMode === 2 && playlist.length) {
+        randomPlaylist = [...playlist].sort(() => Math.random() - 0.5); // 得到打乱的歌曲数组
+        playIndex = randomPlaylist.findIndex((play: SongProps) => play.songPath === audioEle.src);
+      } else if (payload.playMode && payload.playMode === 0) {  // 如果是循环播放的话
+        playIndex = playlist.findIndex((play: SongProps) => play.songPath === audioEle.src);
+        randomPlaylist = [] // 清空掉随机列表
+      }
+      yield put({
+        type: 'setState',
+        payload: {
+          ...payload,
+          randomPlaylist,
+          playIndex
+        }
       })
     },
     // 这里是初始化audio，获取当前播放时间啊，自动播放啊什么的靠的就是这里了

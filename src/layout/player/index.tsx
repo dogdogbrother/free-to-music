@@ -3,7 +3,6 @@ import { PlayerWrap, PlayerBtns, PlayeMode } from './style'
 import { RootState } from '@/models/index'
 import { useSelector, useDispatch } from 'react-redux'
 import Progress from '@/base/progress'
-// import { IPlayMode } from '@/models/play'
 
 const Player = () => {
   const playRef = useRef(null);
@@ -28,7 +27,7 @@ const Player = () => {
   function changePlayMode() {
     playMode = playMode === 2 ? 0 : playMode + 1
     dispatch({
-      type: 'play/setState',
+      type: 'play/changePlayMode',
       payload: {
         playMode
       }

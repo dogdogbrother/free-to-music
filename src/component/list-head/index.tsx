@@ -2,7 +2,7 @@
  * @description 歌曲列表的头部，就是歌曲名，歌手专辑什么的。附带个没有歌曲时空状态提醒
  */
 import React from 'react'
-import { Wrap, EmptyWrap, Link } from './style'
+import { Wrap, EmptyWrap, Link, Header } from './style'
 
 interface IProps {
   empty: boolean
@@ -25,7 +25,11 @@ const ListHead = (props: IProps) => {
           </div>
         </EmptyWrap>
         :
-        <div>我是头部</div>
+        <Header>
+          <li>歌曲</li>
+          <li className="singer">歌手</li>
+          <li className="album">专辑</li>
+        </Header>
       }
     </Wrap>
   )

@@ -28,5 +28,14 @@ export const Link = styled.span`
   margin-left: 10px;
   text-decoration: underline;
 `
-
+export const Header = styled.ul`
+  display: flex;
+  padding: 10px 0;
+  li{
+    width: 60%;
+  }
+  .singer,.album{
+    width: 20%;
+  }
+`
 

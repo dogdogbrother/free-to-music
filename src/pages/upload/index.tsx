@@ -11,7 +11,6 @@ import { Form, Input, Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { UploadChangeParam } from 'antd/lib/upload'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { UploadFile } from 'antd/lib/upload/interface'
 import axios from 'axios'
 
 const SONG_URL = 'api/song'
@@ -52,12 +51,19 @@ const UploadSong = (props: IProps) => {
     action: "api/song/upload-song",
     onChange(info: UploadChangeParam) {
       if (info.file.status === 'done') {
-        console.log(info.file.response);
+        const { album, songPath, coverPath, singer, songName } = info.file.response
+        form.setFieldsValue({
+          album,
+          songPath,
+          coverPath,
+          singer,
+          songName
+        });
+        if (coverPath) {
+          setImageUrl(coverPath)
+        }
       }
     },
-    onRemove(file: UploadFile){
-      return false
-    }
   }
   const updateCoverProps = {
     accept: "image/*",
@@ -73,19 +79,20 @@ const UploadSong = (props: IProps) => {
     }
   }
   function onSubmit(values: any) {
-    if (!values.songPath.file.response) {
+    console.log(values);
+    if (!values.songPath) {
       return message.warning('没有找到歌曲文件额...')
     }
     if (values.coverPath) {
-      values.coverPath = values.coverPath.file.response
+      values.coverPath = values.coverPath ? values.coverPath : values.coverPath.file.response
     }
-    values.songPath = values.songPath.file.response
     axios.post(SONG_URL, values).then(res => {
       message.success('上传成功!')
       form.resetFields()
       setImageUrl('')
     })
   }
+
   return (
     <Wrap>
       {
@@ -95,14 +102,31 @@ const UploadSong = (props: IProps) => {
             form={form}
             {...formItemLayout}
             onFinish={onSubmit}
-            initialValues={{}}
-          >
+          > 
+            <Form.Item 
+              label="上传歌曲"
+              name="songPath"
+              help="在歌曲上传成功后才能提交表单,且歌曲文件信息会自动填充到表单中"
+              valuePropName="file"
+              rules={[
+                { required: true, message: '在歌曲上传成功后才能提交表单' }
+              ]}
+            >
+              <Upload 
+                {...updateSongProps}
+                withCredentials
+              >
+                <Button>
+                  <UploadOutlined /> 点击我上次歌曲
+                </Button>
+              </Upload>
+            </Form.Item>
             <Form.Item 
               label="歌曲名" 
               name="songName"
               rules={[{ required: true, message: '必须要有歌曲名称' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
             <Form.Item 
               label="歌手"
@@ -117,24 +141,6 @@ const UploadSong = (props: IProps) => {
               name="album"
             >
               <Input/>
-            </Form.Item>
-            <Form.Item 
-              label="上传歌曲"
-              name="songPath"
-              help="在歌曲上传成功后才能提交表单"
-              valuePropName="file"
-              rules={[
-                { required: true, message: '在歌曲上传成功后才能提交表单' }
-              ]}
-            >
-              <Upload 
-                {...updateSongProps}
-                withCredentials
-              >
-                <Button>
-                  <UploadOutlined /> 点击我上次歌曲
-                </Button>
-              </Upload>
             </Form.Item>
             <Form.Item 
               label="上传封面"
