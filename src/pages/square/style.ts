@@ -194,14 +194,14 @@ export const Comment = styled.li`
 export const CommentContent = styled.div`
   flex: 1;
   border-bottom: 1px solid #f1f1f1;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
   .info {
     span {
       color: #8a9aa9;
     }
   }
   .content {
-    padding: 20px 0;
+    padding: 10px 0;
   }
   .footnote {
     display: flex;
@@ -211,7 +211,4 @@ export const CommentContent = styled.div`
       margin-right: 30px;
     }
   }
-`
-export const Comment2 = styled.ul`
-
 `

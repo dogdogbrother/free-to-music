@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Input } from 'antd';
 import { Dynamic, UserHeader, Avatar, UserInfo, Content, Link, DynamicImage, 
-  FootBtn, CommentBox, UserComment, CommentAvatar, CommentList, Comment, CommentContent,
-  Comment2 } from './style'
+  FootBtn, CommentBox, UserComment, CommentAvatar, CommentList, Comment, CommentContent } from './style'
 import { SongProps } from '@/utils/formatSong'
 import { UserState } from '@/models/user'
 import { useDispatch, useSelector } from 'react-redux'
@@ -34,7 +33,7 @@ interface IProps {
 
 const DynamicCard = (props: IProps) => {
   const { dynamic, openComment, openCommentAction } = props
-  const { avatar }= useSelector(({user}: RootState) => user)
+  const { avatar, id }= useSelector(({user}: RootState) => user)
   const [ commentList, setCommentList] = useState<IConment[]>([])
   const [ commentValue, setCommentValue ] = useState<string>('')
   const [ subCommentValue, setSubCommentValue ] = useState<string>('')  // 二级评论和三级评论都用一个值来控制
@@ -67,22 +66,41 @@ const DynamicCard = (props: IProps) => {
       return <DynamicImage src={dynamic.song.coverPath} alt="歌曲封面"/>
     }
   }
+  async function getCommentList(id: number) {
+    const res: IHttpRes = await axios.get(`api/comment/${id}`)
+    if (res.code === 200) {
+      // 先得到一次评论
+      const rootComment = res.data.filter((comment: IConment) => !comment.rootCommentId).map((comment: IConment) => {
+        comment.subComment = []
+        return comment
+      })
+      res.data.forEach((subComment: IConment) => {
+        if (subComment.rootCommentId) {
+          rootComment.forEach((comment: IConment) => {
+            if (subComment.rootCommentId === comment.id) {
+              comment.subComment.push(subComment)
+            }
+          })
+        }
+      })
+      console.log(rootComment);
+      
+      setCommentList(rootComment)
+    }
+  }
   async function handlerOpen(id: number) {
     setCommentValue('')  // 开关评论页，我都清空输入框
     setSubCommentToggle(-99)
     setSubCommentValue('')
     if (openComment === id) return openCommentAction(-99)
     openCommentAction(id)
-    const res: IHttpRes = await axios.get(`api/comment/${id}`)
-    if (res.code === 200) setCommentList(res.data)
+    getCommentList(id)
   }
   function handlerComment(id: number) {
     if (!commentValue) return
     axios.post(`${COMMENT_URL}/${id}`, {content: commentValue}).then(res=> {
-      axios.get(`${COMMENT_URL}/${id}`).then(res=> {
-        setCommentList(res.data)
-        setCommentValue('')
-      })
+      getCommentList(id)
+      setCommentValue('')
     })
   }
   function openSubComment(id: number) {
@@ -90,10 +108,18 @@ const DynamicCard = (props: IProps) => {
     setSubCommentValue('')
     setSubCommentToggle(id)
   }
-  function handlerSubComment(id: number) {
+  function handlerSubComment(rootCommentId: number) {
+    if (!subCommentValue) return
     // 给1级评论回复
-    console.log(id,subCommentValue);
-    alert('还没开发')
+    // dynamic.id 放到 url 中，作为 squareId 
+    // id 是 rootCommentId ，也就是一级评论的id
+    // 没有 replyUserId，如果有的话就是三级评论
+    console.log(rootCommentId,subCommentValue);
+    // alert('还没开发')
+    axios.post(`${COMMENT_URL}/${dynamic.id}`, {content: subCommentValue, rootCommentId }).then(res=> {
+      setSubCommentValue('')
+      getCommentList(dynamic.id)
+    })
   }
   return <Dynamic>
     <UserHeader>
@@ -145,7 +171,7 @@ const DynamicCard = (props: IProps) => {
                 <Comment key={conment.id}>
                   <CommentAvatar src={conment.user.avatar} alt="avatar"/>
                   <CommentContent>
-                    <div className="info">{conment.user.nickName} <span>暂无描述</span></div>
+                    <div className="info">{conment.user.nickName} {conment.user.id === id ? '(作者)' : ''} <span>暂无描述</span></div>
                     <p className="content">{conment.content}</p>
                     <div className="footnote">
                       <span>{moment(conment.createdAt).fromNow()}</span>
@@ -166,9 +192,28 @@ const DynamicCard = (props: IProps) => {
                         onSearch={() => handlerSubComment(conment.id)}
                       />
                     }
-                    <Comment2>
-                      <li></li>
-                    </Comment2>
+                    <ul style={{marginTop: '20px'}}>
+                    {
+                      conment.subComment.map(subComment => {
+                        return(
+                          <Comment key={subComment.id}>
+                            <CommentAvatar src={subComment.user.avatar} alt="avatar"/>
+                            <CommentContent>
+                              <div className="info">{subComment.user.nickName} {subComment.user.id === id ? '(作者)' : ''} <span>暂无描述</span></div>
+                              <p className="content">{subComment.content}</p>
+                              <div className="footnote">
+                                <span>{moment(subComment.createdAt).fromNow()}</span>
+                                <div>
+                                  {/* <span className="m-r-10">赞</span> */}
+                                  {/* <span className="pointer">回复</span> */}
+                                </div>
+                              </div>
+                            </CommentContent>
+                          </Comment>
+                        )
+                      })
+                    }
+                    </ul>
                   </CommentContent>
                 </Comment>
               )
