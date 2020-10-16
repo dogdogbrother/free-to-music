@@ -60,10 +60,10 @@ const DynamicCard = (props: IProps) => {
   function viewImages(dynamic: IDynamic) {
     if (dynamic.type === 'dynamic') {
       if (!dynamic.image) return false
-      return <DynamicImage src={dynamic.image} alt="动态"/>
+      return <DynamicImage loading="lazy" src={dynamic.image} alt="动态"/>
     } else {
       if (!dynamic.song.coverPath) return
-      return <DynamicImage src={dynamic.song.coverPath} alt="歌曲封面"/>
+      return <DynamicImage loading="lazy" src={dynamic.song.coverPath} alt="歌曲封面"/>
     }
   }
   async function getCommentList(id: number) {
@@ -153,7 +153,7 @@ const DynamicCard = (props: IProps) => {
       openComment === dynamic.id && <CommentBox>
         <UserComment>
           {
-            avatar && <CommentAvatar src={ avatar } alt="avatar"/>
+            avatar && <CommentAvatar loading="lazy" src={ avatar } alt="avatar"/>
           }
           <Search
             placeholder="你想说些什么"
@@ -169,7 +169,7 @@ const DynamicCard = (props: IProps) => {
             commentList.map(conment => {
               return (
                 <Comment key={conment.id}>
-                  <CommentAvatar src={conment.user.avatar} alt="avatar"/>
+                  <CommentAvatar loading="lazy" src={conment.user.avatar} alt="avatar"/>
                   <CommentContent>
                     <div className="info">{conment.user.nickName} {conment.user.id === id ? '(作者)' : ''} <span>暂无描述</span></div>
                     <p className="content">{conment.content}</p>
@@ -197,7 +197,7 @@ const DynamicCard = (props: IProps) => {
                       conment.subComment.map(subComment => {
                         return(
                           <Comment key={subComment.id}>
-                            <CommentAvatar src={subComment.user.avatar} alt="avatar"/>
+                            <CommentAvatar loading="lazy" src={subComment.user.avatar} alt="avatar"/>
                             <CommentContent>
                               <div className="info">{subComment.user.nickName} {subComment.user.id === id ? '(作者)' : ''} <span>暂无描述</span></div>
                               <p className="content">{subComment.content}</p>

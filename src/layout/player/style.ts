@@ -5,7 +5,8 @@ export const PlayerWrap = styled.div`
   right: 0;
   bottom: 0;
   left: 210px;
-  height: 80px;
+  height: 60px;
+  padding-top: 20px;
   background-color: rgba(0,0,0,0.1);
   display: flex;
   @media (max-width: 640px) {
