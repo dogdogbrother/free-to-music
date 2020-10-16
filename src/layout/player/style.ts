@@ -31,3 +31,13 @@ export const PlayeMode = styled.div`
     cursor: pointer;
   }
 `
+
+export const VolumeBtns = styled.div`
+  margin-left: 10px;
+  display: flex;
+  line-height: 30px;
+  span {
+    margin-right: 10px;
+    font-size: 16px;
+  }
+`

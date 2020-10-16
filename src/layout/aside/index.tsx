@@ -1,5 +1,5 @@
 /**
- * @description asi
+ * @description aside
  */
 import React from 'react'
 import { connect, ConnectedProps } from 'react-redux'
@@ -9,7 +9,7 @@ import { RootState } from '@/models/index'
 import UserInfo from '@/base/user-info/index'
 import routers from '@/routes/index'
 
-const mapStateToProps = ({user}: RootState) => user
+const mapStateToProps = ({play}: RootState) => play
 
 const connector = connect(mapStateToProps);
 
@@ -19,6 +19,7 @@ interface IProps extends MadelState {}
 
 const Aside = (props: IProps) => {
   // const { dispatch, ...reset } = props
+  console.log('aside.tsx');
   return (
     <Wrap id="aside">
       <UserInfo />

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import { PlayerWrap, PlayerBtns, PlayeMode } from './style'
+import { PlayerWrap, PlayerBtns, PlayeMode, VolumeBtns } from './style'
 import { RootState } from '@/models/index'
 import { useSelector, useDispatch } from 'react-redux'
 import Progress from '@/base/progress'
@@ -7,7 +7,7 @@ import Progress from '@/base/progress'
 const Player = () => {
   const playRef = useRef(null);
   const dispatch = useDispatch()
-  let { playing, playMode } = useSelector((state: RootState) => state.play)
+  let { playing, playMode, volume } = useSelector((state: RootState) => state.play)
   useEffect(() => {
     dispatch({
       type: 'play/audio',
@@ -33,6 +33,14 @@ const Player = () => {
       }
     })
   }
+  function changeVolume(action: number) {
+    dispatch({
+      type: 'play/changeVolume',
+      payload: {
+        action
+      }
+    })
+  }
   return (
     <PlayerWrap>
       <PlayerBtns>
@@ -50,6 +58,11 @@ const Player = () => {
         {map[playMode]}
       </PlayeMode>
       <Progress />
+      <VolumeBtns>
+        <span className="pointer ellipsis" onClick={() =>changeVolume(0)}>小点声</span>
+        <span className="pointer ellipsis" onClick={() => changeVolume(1)}>大点声</span>
+        <span>{volume * 100}%</span>
+      </VolumeBtns>
       <audio ref={playRef} />
     </PlayerWrap>
   )

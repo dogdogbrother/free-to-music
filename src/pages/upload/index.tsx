@@ -37,6 +37,7 @@ function getBase64(img: any, callback: any) {
 const UploadSong = (props: IProps) => {
   const [imageUrl, setImageUrl] = useState('')
   const [loading, setLoading] = useState(false)
+  const [updateState, setUpdateState] = useState(false)
   const [form] = Form.useForm();
   const { userName } = props
   const uploadButton = (
@@ -52,6 +53,7 @@ const UploadSong = (props: IProps) => {
     onChange(info: UploadChangeParam) {
       if (info.file.status === 'done') {
         const { album, songPath, coverPath, singer, songName } = info.file.response
+        setUpdateState(true)
         form.setFieldsValue({
           album,
           songPath,
@@ -88,6 +90,7 @@ const UploadSong = (props: IProps) => {
     }
     axios.post(SONG_URL, values).then(res => {
       message.success('上传成功!')
+      setUpdateState(false)
       form.resetFields()
       setImageUrl('')
     })
@@ -106,7 +109,7 @@ const UploadSong = (props: IProps) => {
             <Form.Item 
               label="上传歌曲"
               name="songPath"
-              help="在歌曲上传成功后才能提交表单,且歌曲文件信息会自动填充到表单中"
+              help="歌曲上传成功后,歌曲文件信息会自动填充到表单中"
               valuePropName="file"
               rules={[
                 { required: true, message: '在歌曲上传成功后才能提交表单' }
@@ -121,47 +124,50 @@ const UploadSong = (props: IProps) => {
                 </Button>
               </Upload>
             </Form.Item>
-            <Form.Item 
-              label="歌曲名" 
-              name="songName"
-              rules={[{ required: true, message: '必须要有歌曲名称' }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item 
-              label="歌手"
-              name="singer"
-              help="如果有多个歌手请用分号 / 隔离下"
-              rules={[{ required: true, message: '谁唱的你得告诉我吧' }]}
-            >
-              <Input/>
-            </Form.Item>
-            <Form.Item 
-              label="专辑"
-              name="album"
-            >
-              <Input/>
-            </Form.Item>
-            <Form.Item 
-              label="上传封面"
-              name="coverPath"
-              help="如果歌曲信息包含封面则无效"
-              valuePropName="file"
-            >
-              <Upload 
-                {...updateCoverProps}
-                listType="picture-card"
-                withCredentials
-              >
-                {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-              </Upload>
-            </Form.Item>
-
-            <Form.Item wrapperCol={{ span: 15, offset: 5 }}>
-              <Button type="primary" htmlType="submit">
-                提交歌曲
-              </Button>
-            </Form.Item>
+            {
+              updateState && <>
+                <Form.Item 
+                  label="歌曲名" 
+                  name="songName"
+                  rules={[{ required: true, message: '必须要有歌曲名称' }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item 
+                  label="歌手"
+                  name="singer"
+                  help="如果有多个歌手请用分号 / 隔离下"
+                  rules={[{ required: true, message: '谁唱的你得告诉我吧' }]}
+                >
+                  <Input/>
+                </Form.Item>
+                <Form.Item 
+                  label="专辑"
+                  name="album"
+                >
+                  <Input/>
+                </Form.Item>
+                <Form.Item 
+                  label="上传封面"
+                  name="coverPath"
+                  help="如果歌曲信息包含封面则无效"
+                  valuePropName="file"
+                >
+                  <Upload 
+                    {...updateCoverProps}
+                    listType="picture-card"
+                    withCredentials
+                  >
+                    {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                  </Upload>
+                </Form.Item>
+                <Form.Item wrapperCol={{ span: 15, offset: 5 }}>
+                  <Button type="primary" htmlType="submit">
+                    提交歌曲
+                  </Button>
+                </Form.Item>
+              </>
+            }
           </Form>
         </div>
       }

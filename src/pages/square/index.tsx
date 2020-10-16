@@ -82,7 +82,7 @@ const Square = () => {
         <PublishBtns>
           <FileContainer>
             <Link className="file-btn"><i className="iconfont" style={{fontSize: 20}}>&#xe61a;</i> 插入图片</Link>
-            <input type="file" ref={fileRef} name="fn" onChange={selectImage}></input>
+            <input type="file" ref={fileRef} name="fn" onChange={selectImage} accept="image/*"></input>
           </FileContainer>
           <Button type="primary" size="large" disabled={remain >= 200} onClick={publish}>发布</Button>
         </PublishBtns>
