@@ -13,6 +13,7 @@ export const Publish = styled.div`
   }
 `
 export const TextDecorate = styled.div`
+  margin-left: 20px;
   max-width: 600px;
   min-width: 300px;
   width: 100%;
@@ -36,6 +37,7 @@ export const List = styled.ul`
 `
 
 export const Dynamic = styled.li`
+  background-color: rgba(255,255,255,0.4);
   width: 100%;
   margin-bottom: 20px;
   /* background-color: red; */
@@ -101,7 +103,7 @@ export const FootBtn = styled.div`
     width: 50%;
     text-align: center;
     position: relative;
-    color: #9b9b9b;
+    color: #6b6b6b;
     &:nth-child(1):after {
       content: "";
       position: absolute;

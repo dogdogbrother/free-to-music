@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
-import { BgImg, Mask, Wrap} from './style'
+import { BgImg } from './style'
 import { RootState } from '@/models/index'
 
   
@@ -13,10 +13,8 @@ const BackgroundMask = () => {
   const styled = {
     backgroundImage: `url(${play ? play.coverPath : ''})`
   }
-  return <Wrap>
-    <BgImg style={styled} id="BgImg"/>
-    <Mask id="Mask"/>
-  </Wrap>
+  return <BgImg style={styled} id="BgImg"/>
+
 }
 
 export default BackgroundMask

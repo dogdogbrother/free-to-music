@@ -9,3 +9,7 @@
       flex-direction: column;
   }
 }
+#layout-box {
+  position: relative;
+  z-index: 2;
+}

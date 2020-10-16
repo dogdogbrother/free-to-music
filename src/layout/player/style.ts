@@ -2,12 +2,13 @@ import styled from'styled-components';
 
 export const PlayerWrap = styled.div`
   position:fixed;
+  z-index: 2;
   right: 0;
   bottom: 0;
   left: 210px;
   height: 60px;
   padding-top: 20px;
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(150, 150, 150, 0.2);
   display: flex;
   @media (max-width: 640px) {
     left: 0;
