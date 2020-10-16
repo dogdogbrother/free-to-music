@@ -37,6 +37,7 @@ export const VolumeBtns = styled.div`
   margin-left: 10px;
   display: flex;
   line-height: 30px;
+  user-select: none;
   span {
     margin-right: 10px;
     font-size: 16px;

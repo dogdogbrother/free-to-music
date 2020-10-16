@@ -228,7 +228,7 @@ const playModel: PlayModel = {
     },
     // 这里是初始化audio，获取当前播放时间啊，自动播放啊什么的靠的就是这里了
     *initAudio({ payload: dispatch }, { put, select }) {
-      const { audioEle, buffered } = yield select((state: RootState)=> state.play)
+      const { audioEle } = yield select((state: RootState)=> state.play)
       const volume = localStorage.getItem('volume')
       const resVolume = volume ? Number(volume) : 1
       yield put({

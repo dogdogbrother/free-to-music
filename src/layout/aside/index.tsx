@@ -18,8 +18,6 @@ type MadelState = ConnectedProps<typeof connector>;
 interface IProps extends MadelState {}
 
 const Aside = (props: IProps) => {
-  // const { dispatch, ...reset } = props
-  console.log('aside.tsx');
   return (
     <Wrap id="aside">
       <UserInfo />

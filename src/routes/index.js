@@ -1,48 +1,35 @@
-import React from 'react';
-import { Redirect } from "react-router-dom";
-import Square from '@/pages/square'
-import Wyy from '@/pages/wyy'
-import Upload from '@/pages/upload'
-import My from '@/pages/my'
-import PlayList from '@/pages/playlist'
-import Like from '@/pages/like'
+
+
 
 export default [
   {
     path: "/",
-    exact: true,
-    render: () => (
-      <Redirect to={"/square"}/>
-    )
-  },
-  {
-    path: "/square",
     name: "广场",
-    component: Square
+    component: '@/pages/square'
   },
   {
     path: "/wyy-search",
     name: "网易云音乐",
-    component: Wyy
+    component: '@/pages/wyy'
   },
   {
     path: "/my-search",
     name: "我的音乐",
-    component: My
+    component: '@/pages/my'
   },
   {
     path: "/play-list",
     name: "播放列表",
-    component: PlayList
+    component: '@/pages/playlist'
   },
   {
     path: "/my-like",
     name: "我的喜欢",
-    component: Like
+    component: '@/pages/like'
   },
   {
     path: "/upload-song",
     name: "上传歌曲",
-    component: Upload
+    component: '@/pages/upload'
   },
 ]
