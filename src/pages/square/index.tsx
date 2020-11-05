@@ -24,11 +24,7 @@ const Square = () => {
   useEffect(() => {getList()}, [])
   async function getList() {
     const data: any =  await axios.get(SQUARE_LIST_URL)
-    if (data.code === 200) {
-      console.log(data.data);
-      
-      // setDynamicList(data.data)
-    }
+    if (data.code === 200) setDynamicList(data.data)
   }
   function handleTextArea(e: ChangeEvent<HTMLTextAreaElement>) {
     setTextValue(e.target.value)
