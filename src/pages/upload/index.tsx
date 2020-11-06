@@ -7,11 +7,12 @@ import EmptyLogin from '@/base/empty-login'
 import { connect, ConnectedProps } from 'react-redux'
 import { Wrap } from './style'
 import { RootState } from '@/models/index'
-import { Form, Input, Upload, Button, message } from 'antd';
+import { Form, Input, Upload, Button, message, Modal } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { UploadChangeParam } from 'antd/lib/upload'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from 'axios'
+import RepetitionList from './component/repetitionList'
 
 const SONG_URL = 'api/song'
 
@@ -38,7 +39,10 @@ const UploadSong = (props: IProps) => {
   const [imageUrl, setImageUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [updateState, setUpdateState] = useState(false)
+  const [dialogVisible, setDialogVisible] = useState(false)
   const [form] = Form.useForm();
+  const [tmpParams, setTmpParams] = useState({})
+  const [repetitionSong, setRepetitionSong] = useState([])
   const { userName } = props
   const uploadButton = (
     <div>
@@ -81,21 +85,34 @@ const UploadSong = (props: IProps) => {
     }
   }
   function onSubmit(values: any) {
-    console.log(values);
     if (!values.songPath) {
       return message.warning('没有找到歌曲文件额...')
     }
     if (values.coverPath) {
       values.coverPath = values.coverPath ? values.coverPath : values.coverPath.file.response
     }
+    postSong(values)
+  }
+  // 包装一层的原因是因为我要重复调用
+  const postSong = (values:any) => {
     axios.post(SONG_URL, values).then(res => {
+      // 有length代表是数组,代表服务有同名的歌曲,给出弹窗确认是否上传
+      if (res.data.length) {
+        setDialogVisible(true)
+        setTmpParams(values)
+        setRepetitionSong(res.data)
+        return 
+      }
       message.success('上传成功!')
       setUpdateState(false)
       form.resetFields()
       setImageUrl('')
+      setDialogVisible(false)
     })
   }
-
+  const confirmSubmit = () => {
+    postSong({...tmpParams, isRepetition: true})
+  }
   return (
     <Wrap>
       {
@@ -171,6 +188,20 @@ const UploadSong = (props: IProps) => {
           </Form>
         </div>
       }
+      <Modal
+        title={`找到${repetitionSong.length}首同名歌曲`}
+        visible={dialogVisible}
+        footer={[
+          <Button key="back" onClick={() => setDialogVisible(false)}>
+            好的,我不上传了
+          </Button>,
+          <Button key="submit" type="primary" onClick={confirmSubmit}>
+            没有我想要的,继续上传
+          </Button>
+        ]}
+      > 
+        <RepetitionList songs={repetitionSong}/>
+      </Modal>
     </Wrap>
   )
 }

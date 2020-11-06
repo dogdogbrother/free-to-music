@@ -83,8 +83,6 @@ const DynamicCard = (props: IProps) => {
           })
         }
       })
-      console.log(rootComment);
-      
       setCommentList(rootComment)
     }
   }
@@ -114,7 +112,6 @@ const DynamicCard = (props: IProps) => {
     // dynamic.id 放到 url 中，作为 squareId 
     // id 是 rootCommentId ，也就是一级评论的id
     // 没有 replyUserId，如果有的话就是三级评论
-    console.log(rootCommentId,subCommentValue);
     // alert('还没开发')
     axios.post(`${COMMENT_URL}/${dynamic.id}`, {content: subCommentValue, rootCommentId }).then(res=> {
       setSubCommentValue('')

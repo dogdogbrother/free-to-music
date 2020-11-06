@@ -61,7 +61,7 @@ const Player = () => {
       <VolumeBtns>
         <span className="pointer ellipsis" onClick={() =>changeVolume(0)}>小点声</span>
         <span className="pointer ellipsis" onClick={() => changeVolume(1)}>大点声</span>
-        <span>{volume * 100}%</span>
+        <span style={{width: '42px',textAlign: 'center'}}>{volume * 100}%</span>
       </VolumeBtns>
       <audio ref={playRef} />
     </PlayerWrap>

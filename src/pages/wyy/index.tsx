@@ -2,22 +2,22 @@
  * @description 网易云音乐的搜索界面
  * @author senlin
  */
-import React, { useState } from 'react'
+import React from 'react'
 import { Wrap, SearchHeader } from './style'
 import { Input, message } from 'antd';
 import { CustomerServiceOutlined } from '@ant-design/icons';
 import SongList from '@/component/song-list'
 import axios from 'axios'
-import formatSongs, { SongProps } from '@/utils/formatSong'
+import formatSongs from '@/utils/formatSong'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/models/index';
+import OnPlayListBtn from '@/base/onPlayListBtn';
 
 const WY_MUSIC_LIST_URL = 'wyapi/search?' 
 
 const Wyy = () => {
   const keep = useSelector(({keep}: RootState) => keep)
   const dispatch = useDispatch()
-  const [, setSongs] = useState<SongProps[]>([])
   function handlerSearch(value: React.KeyboardEvent<HTMLInputElement>) {
     if (!value.currentTarget.value) {
       return message.warning('你要找什么呢,先输入些什么吧');
@@ -31,7 +31,6 @@ const Wyy = () => {
       }
     }).then(res => {
       const formatData = formatSongs(res.data.result.songs)
-      setSongs(formatData)
       dispatch({
         type: 'keep/setState',
         payload: {
@@ -53,6 +52,7 @@ const Wyy = () => {
           prefix={<CustomerServiceOutlined />} 
           onPressEnter={handlerSearch}
         />
+        <OnPlayListBtn songs={keep.wyySongs}/>
       </SearchHeader>
       <SongList songs={keep.wyySongs}/>
     </Wrap>

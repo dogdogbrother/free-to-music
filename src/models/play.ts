@@ -54,6 +54,7 @@ interface PlayModel extends Model {
     changePlay: Effect;
     changePlayMode: Effect;
     changeVolume: Effect;
+    batchPlay: Effect;
   };
 }
 
@@ -188,9 +189,6 @@ const playModel: PlayModel = {
     },
     *changePlayMode({ payload }, { put, select }) {
       let { playlist, randomPlaylist, playIndex, audioEle } = yield select((state: RootState)=> state.play)
-      console.log(audioEle.src);
-      console.log(playlist);
-      
       // 如果 playMode 为2的话就是随机播放了,如果当前没有播放列表也就不用操作
       if (payload.playMode && payload.playMode === 2 && playlist.length) {
         randomPlaylist = [...playlist].sort(() => Math.random() - 0.5); // 得到打乱的歌曲数组
@@ -224,6 +222,22 @@ const playModel: PlayModel = {
         payload: {
           volume: resVolume
         }
+      })
+    },
+    // 批量播放,将列表中的歌曲全部拿来,剔出掉已经正在播放的,其余的加到列表中,并且播放第一手
+    *batchPlay({ songs }, { put, select }) {
+      let { playlist } = yield select((state: RootState)=> state.play)
+      const addSongs = songs.filter((song: SongProps) => {
+        return !playlist.find((play: SongProps) => play.id === song.id)
+      })
+      if (!addSongs.length) return
+      yield put({
+        type: "setState",
+        payload: { playlist: playlist.concat(addSongs) }
+      })
+      yield put({
+        type: "requestMusic",
+        song: addSongs[0]
       })
     },
     // 这里是初始化audio，获取当前播放时间啊，自动播放啊什么的靠的就是这里了

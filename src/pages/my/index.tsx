@@ -7,6 +7,7 @@ import { SongProps } from '@/utils/formatSong'
 import SongList from '@/component/song-list'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/models/index';
+import OnPlayListBtn from '@/base/onPlayListBtn';
 
 const MY_MUSIC_LIST_URL = 'api/song/list/' 
 
@@ -42,6 +43,7 @@ const My = () => {
           prefix={<CustomerServiceOutlined />} 
           onPressEnter={handlerSearch}
         />
+        <OnPlayListBtn songs={keep.mySongs}/>
       </SearchHeader>
       <SongList songs={keep.mySongs}/>
     </Wrap>
