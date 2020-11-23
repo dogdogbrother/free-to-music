@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from 'react'
-import { PlayerWrap, PlayerBtns, PlayeMode, VolumeBtns } from './style'
+import { PlayerWrap, PlayerBtns, PlayeMode, VolumeBtns, Github } from './style'
 import { RootState } from '@/models/index'
 import { useSelector, useDispatch } from 'react-redux'
 import Progress from '@/base/progress'
+import { GithubOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 
 const Player = () => {
   const playRef = useRef(null);
@@ -63,6 +65,11 @@ const Player = () => {
         <span className="pointer ellipsis" onClick={() => changeVolume(1)}>大点声</span>
         <span style={{width: '42px',textAlign: 'center'}}>{volume * 100}%</span>
       </VolumeBtns>
+      <Github>
+        <Tooltip placement="topLeft" mouseEnterDelay={0.5} title="卑微的Star">
+          <GithubOutlined onClick={() => window.open('https://github.com/dogdogbrother/free-to-music')}/>
+        </Tooltip>
+      </Github>
       <audio ref={playRef} />
     </PlayerWrap>
   )

@@ -4,25 +4,18 @@
  */
 import React, { useState } from 'react'
 import EmptyLogin from '@/base/empty-login'
-import { connect, ConnectedProps } from 'react-redux'
 import { Wrap } from './style'
-import { RootState } from '@/models/index'
+import { useSelector } from 'react-redux'
 import { Form, Input, Upload, Button, message, Modal } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { UploadChangeParam } from 'antd/lib/upload'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from 'axios'
 import RepetitionList from './component/repetitionList'
+import { RootState } from '../../models'
 
 const SONG_URL = 'api/song'
 
-const mapStateToProps = ({user}: RootState) => user
-
-const connector = connect(mapStateToProps);
-
-type MadelState = ConnectedProps<typeof connector>;
-
-interface IProps extends MadelState {}
 
 const formItemLayout = {
   labelCol: { span: 5 },
@@ -35,7 +28,7 @@ function getBase64(img: any, callback: any) {
   reader.readAsDataURL(img);
 }
 
-const UploadSong = (props: IProps) => {
+const UploadSong = () => {
   const [imageUrl, setImageUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [updateState, setUpdateState] = useState(false)
@@ -43,7 +36,7 @@ const UploadSong = (props: IProps) => {
   const [form] = Form.useForm();
   const [tmpParams, setTmpParams] = useState({})
   const [repetitionSong, setRepetitionSong] = useState([])
-  const { userName } = props
+  const { userName } = useSelector((state: RootState) => (state.user))
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -206,4 +199,4 @@ const UploadSong = (props: IProps) => {
   )
 }
 
-export default connector(UploadSong);
+export default UploadSong

@@ -3,20 +3,11 @@
  */
 import React from 'react'
 import { Empty, Button } from 'antd';
-import { connect, ConnectedProps } from 'react-redux'
 import { Wrap } from './style'
-import { RootState } from '@/models/index'
+import { useDispatch } from 'react-redux'
 
-const mapStateToProps = ({user}: RootState) => user
-
-const connector = connect(mapStateToProps);
-
-type MadelState = ConnectedProps<typeof connector>;
-
-interface IProps extends MadelState {}
-
-const UserInfo = (props: IProps) => {
-  const { dispatch } = props
+const UserInfo = () => {
+  const dispatch = useDispatch()
   function goLogin() {
     dispatch({ type: 'login/openDialog' })
   }
@@ -39,4 +30,4 @@ const UserInfo = (props: IProps) => {
   </>
 }
 
-export default connector(UserInfo)
+export default UserInfo

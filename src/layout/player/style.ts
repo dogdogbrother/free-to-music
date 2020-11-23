@@ -43,3 +43,12 @@ export const VolumeBtns = styled.div`
     font-size: 16px;
   }
 `
+export const Github = styled.div`
+  cursor: pointer;
+  position: absolute;
+  top: 27px;
+  right: 20px;
+  @media (max-width: 1200px) {
+    display: none
+  } 
+`

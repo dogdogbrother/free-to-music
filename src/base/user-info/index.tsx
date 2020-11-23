@@ -1,23 +1,18 @@
 /**
  * @description aside左上角的用户头像和点击登陆功能
  */
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Popover } from 'antd';
-import { connect, ConnectedProps } from 'react-redux'
-import { Wrap, Avatar, UserName } from './style'
+import { Wrap, Avatar, UserName, PopoverList } from './style'
 import { RootState } from '../../models'
 import Login from '@/component/login/index'
+import { NavLink } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 
-const mapStateToProps = ({user}: RootState) => user
-
-const connector = connect(mapStateToProps);
-
-type MadelState = ConnectedProps<typeof connector>;
-
-interface IProps extends MadelState {}
-
-const UserInfo = (props: IProps) => {
-  const { dispatch, ...reset } = props
+const UserInfo = () => {
+  const [popoverVisible, setPopoverVisible] = useState(false)
+  const { avatar, nickName } = useSelector((state: RootState) => (state.user))
+  const dispatch = useDispatch()
   useEffect(() => {
     dispatch({
       type: 'user/getInfo'
@@ -30,28 +25,36 @@ const UserInfo = (props: IProps) => {
     dispatch({ type: 'user/logout' })
   }
   const popoverContent = (
-    <div>
-      <p className="pointer" onClick={logout}>退出登陆</p>
-    </div>
+    <PopoverList onClick={() => setPopoverVisible(false)}>
+      <li>我的首页</li>
+      <li>
+        <NavLink exact to="/edit-info">编辑资料</NavLink>
+      </li>
+      <li onClick={logout}>退出登陆</li>
+    </PopoverList>
   )
   return <>
     <Wrap>
       {
-        reset.avatar 
-          ?
-        <>
-          <Popover content={popoverContent} placement="bottom" trigger="click" title={false}>
-            <Avatar src={reset.avatar} alt="avatar" className="pointer" />
+        avatar ? <>
+          <Popover 
+            content={popoverContent} 
+            placement="bottom" 
+            trigger="click" 
+            title={false}
+            visible={popoverVisible}
+            onVisibleChange={(visible) => setPopoverVisible(visible)}>
+            <Avatar src={avatar} alt="avatar" className="pointer" />
           </Popover>
           <UserName 
             className="ellipsis" 
             style={{color:'#333'}}
-          >{reset.nickName}</UserName>
+          >{nickName}</UserName>
         </>
           :
         <>
           <Avatar 
-            src={reset.avatar || require('../../assets/avatar/avatar.png')} 
+            src={avatar || require('../../assets/avatar/avatar.png')} 
             alt="avatar" 
           />
           <UserName 
@@ -66,4 +69,4 @@ const UserInfo = (props: IProps) => {
   </>
 }
 
-export default connector(UserInfo)
+export default UserInfo

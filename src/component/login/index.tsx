@@ -2,25 +2,17 @@
  * @description 登陆注册的dialog
  */
 import React, { useState, } from 'react'
-import { connect, ConnectedProps } from 'react-redux'
 import { RootState } from '@/models/index'
 import { Modal } from 'antd';
 import { SwitchWrap } from './style'
 import LoginFrom, { ILoginParameter } from './LoginForm'
 import RegisterForm, { IRegisterParameter } from './RegisterForm'
+import { useSelector, useDispatch } from 'react-redux'
 
-const mapStateToProps = ({login}: RootState) => login
-
-const connector = connect(mapStateToProps);
-
-type MadelState = ConnectedProps<typeof connector>;
-
-interface IProps extends MadelState {}
-
-const Login = (props: IProps) => {
-  const { loginStatus, dispatch } = props
+const Login = () => {
   const [ isLogin, setIsLogin ] = useState(true)
- 
+  const dispatch = useDispatch()
+  const { loginStatus } = useSelector((state: RootState) => (state.login))
   const switchRegister = () => {
     return(
       <SwitchWrap>
@@ -63,4 +55,4 @@ const Login = (props: IProps) => {
   </>
 }
 
-export default connector(Login)
+export default Login

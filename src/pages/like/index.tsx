@@ -6,6 +6,7 @@ import SongList from '@/component/song-list'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/models/index'
 import OnPlayListBtn from '@/base/onPlayListBtn';
+import { PageTitle } from '@/base/style'
 
 const MY_LIKE_URL = 'api/like'
 
@@ -22,7 +23,7 @@ const Like = () => {
   return ( 
     <Wrap>
       <SearchHeader>
-        <h2 className="title">我的喜欢</h2>
+        <PageTitle>我的喜欢</PageTitle>
         <OnPlayListBtn songs={songs}/>
       </SearchHeader>
       <SongList songs={songs}/>

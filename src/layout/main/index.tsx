@@ -34,6 +34,10 @@ const LayoutMain = ()=> {
           loader: () => import('@/pages/upload'),
           loading: Loading
         })} />
+        <Route exact path="/edit-info" component={Loadable({
+          loader: () => import('@/pages/editinfo'),
+          loading: Loading
+        })} />
       </Switch>
     </Wrap>
   )

@@ -8,6 +8,7 @@ import SongList from '@/component/song-list'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/models/index';
 import OnPlayListBtn from '@/base/onPlayListBtn';
+import { PageTitle } from '@/base/style'
 
 const MY_MUSIC_LIST_URL = 'api/song/list/' 
 
@@ -34,7 +35,7 @@ const My = () => {
   return ( 
     <Wrap>
       <SearchHeader>
-        <h2 className="title">我的音乐</h2>
+        <PageTitle>我的音乐</PageTitle>
         <Input 
           defaultValue={keep.searchValue}
           size="large" 

@@ -12,6 +12,7 @@ import formatSongs from '@/utils/formatSong'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/models/index';
 import OnPlayListBtn from '@/base/onPlayListBtn';
+import { PageTitle } from '@/base/style'
 
 const WY_MUSIC_LIST_URL = 'wyapi/search?' 
 
@@ -43,7 +44,7 @@ const Wyy = () => {
   return (
     <Wrap>
       <SearchHeader>
-        <h2 className="title">网易云音乐</h2>
+        <PageTitle>网易云音乐</PageTitle>
         <Input 
           defaultValue={keep.wyySearch}
           size="large" 
