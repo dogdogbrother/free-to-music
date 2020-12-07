@@ -41,7 +41,7 @@ const Square = () => {
       setTextValue('')
     }
   }
-  function selectImage(e: any) {
+  function selectImage() {
     var reader = new FileReader();
     reader.onload = function(ev) {
       if (ev?.target?.result) {

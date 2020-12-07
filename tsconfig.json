@@ -19,7 +19,9 @@
     "noEmit": true,
     "jsx": "react",
     "baseUrl": "./src",
+    "suppressImplicitAnyIndexErrors":true,  // 对象中用 [] 取值
     "paths": {
+      "@/config/*": ["config/*"],
       "@/utils/*": ["utils/*"],
       "@/pages/*": ["pages/*"],
       "@/component/*": ["component/*"],
