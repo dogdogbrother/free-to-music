@@ -9,7 +9,8 @@ import { fieldMap, genderMap } from '@/config/map'
 import axios from 'axios'
 import { IHttpRes } from '../square/types'
 import { useDispatch } from 'react-redux'
-const USER_INFO = "api/user/info"
+
+const USER_INFO = "/api/user/info"
 
 const EditInfo = () => {
   const fileRef = useRef<HTMLInputElement | null>(null)
@@ -21,7 +22,6 @@ const EditInfo = () => {
     characterSignature: ""
   })
   const [ activeIndex, setActiveIndex ] = useState(-1)
-
   useEffect(() => {
     axios.get(USER_INFO).then(res => {
       const { avatar, nickName, gender, characterSignature } = res.data
@@ -33,7 +33,6 @@ const EditInfo = () => {
       })
     })
   }, [])
-  
   function selectImage() {
     var reader = new FileReader();
     reader.onload = async function(ev) {

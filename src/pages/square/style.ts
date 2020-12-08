@@ -40,7 +40,6 @@ export const Dynamic = styled.li`
   background-color: rgba(255,255,255,0.4);
   width: 100%;
   margin-bottom: 20px;
-  /* background-color: red; */
   border: solid 1px rgba(99,99,99,0.1);
   box-shadow: 0 2px 10px rgba(99,99,99,0.1);
 `
@@ -54,6 +53,7 @@ export const Avatar = styled.img`
   height: 50px;
   border-radius: 50%;
   margin-right: 10px;
+  cursor: pointer;
 `
 
 export const UserInfo = styled.div`
@@ -62,6 +62,7 @@ export const UserInfo = styled.div`
   justify-content: space-around;
   .user-name {
     font-weight: bold;
+    cursor: pointer;
   }
   .describe {
     color: #999;

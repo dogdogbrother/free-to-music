@@ -38,6 +38,10 @@ const LayoutMain = ()=> {
           loader: () => import('@/pages/editinfo'),
           loading: Loading
         })} />
+        <Route exact path="/user-page/:userId" component={Loadable({
+          loader: () => import('@/pages/userpage'),
+          loading: Loading
+        })} />
       </Switch>
     </Wrap>
   )

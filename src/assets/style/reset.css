@@ -22,7 +22,7 @@ body {
 html, body {
   background: #fafbfc;
 }
-ol, ul {
+ol, ul, li {
   list-style: none;
 }
 blockquote, q {

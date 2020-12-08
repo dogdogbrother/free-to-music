@@ -7,6 +7,7 @@ import { SongProps } from '@/utils/formatSong'
 import { UserState } from '@/models/user'
 import { useDispatch, useSelector } from 'react-redux'
 import { IConment, IHttpRes } from './types';
+import { useHistory } from "react-router-dom";
 
 import 'moment/locale/zh-cn'
 import { RootState } from '@/models/index'
@@ -24,6 +25,7 @@ export interface IDynamic {
   user: UserState
   image: string
   comment: number | null
+  userId: string
 }
 interface IProps {
   dynamic: IDynamic,
@@ -39,6 +41,7 @@ const DynamicCard = (props: IProps) => {
   const [ subCommentValue, setSubCommentValue ] = useState<string>('')  // 二级评论和三级评论都用一个值来控制
   const [ subCommentToggle, setSubCommentToggle ] = useState<number>(-99)  // 二级评论和三级评论的开关都有一个值来控制
   const dispatch = useDispatch()
+  const history = useHistory()
   function handlerPlay(song: SongProps) {
     dispatch({
       type: 'play/requestMusic',
@@ -108,21 +111,21 @@ const DynamicCard = (props: IProps) => {
   }
   function handlerSubComment(rootCommentId: number) {
     if (!subCommentValue) return
-    // 给1级评论回复
-    // dynamic.id 放到 url 中，作为 squareId 
-    // id 是 rootCommentId ，也就是一级评论的id
-    // 没有 replyUserId，如果有的话就是三级评论
-    // alert('还没开发')
     axios.post(`${COMMENT_URL}/${dynamic.id}`, {content: subCommentValue, rootCommentId }).then(res=> {
       setSubCommentValue('')
       getCommentList(dynamic.id)
     })
   }
+  // 点击头像和用户名，去往用户页面
+  function toUserPage(userId: string) {
+    console.log(userId);
+    history.push(`/user-page/${userId}`)
+  }
   return <Dynamic>
     <UserHeader>
-      <Avatar src={dynamic.user.avatar} alt="avatar"/>
+      <Avatar src={dynamic.user.avatar} alt="avatar" onClick={() => toUserPage(dynamic.userId)} />
       <UserInfo>
-        <p className="user-name">{dynamic.user.nickName}</p>
+        <p className="user-name" onClick={() => toUserPage(dynamic.userId)}>{dynamic.user.nickName}</p>
         <p className="describe">{moment(dynamic.createdAt).format('YYYY-MM-DD HH:MM')}</p>
       </UserInfo>
     </UserHeader>
@@ -222,4 +225,4 @@ const DynamicCard = (props: IProps) => {
   </Dynamic>
 }
 
-export default DynamicCard;
+export default DynamicCard

@@ -43,4 +43,9 @@ export default [
     name: "编辑资料",
     component: '@/pages/editinfo'
   },
+  {
+    path: "/user-page",
+    name: "用户主页",
+    component: '@/pages/userpage'
+  },
 ]
